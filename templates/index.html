@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Basic HTML metadata -->
+  <meta charset="UTF-8" />
+  <title>Smart AI Meeting Scheduler</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- Favicon icon -->
+  <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  
+  <!-- Tailwind CSS for styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Custom JS file -->
+  <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+
+  <!-- Custom CSS animation and styles -->
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+
+    @keyframes fadeInSlideUp {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-animate { animation: fadeInSlideUp 0.6s ease-out both; }
+    .fade-delay-1 { animation-delay: 0.2s; }
+    .fade-delay-2 { animation-delay: 0.4s; }
+    .fade-delay-3 { animation-delay: 0.6s; }
+
+    .btn-animate {
+      transition: transform 0.25s ease;
+    }
+    .btn-animate:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+
+<body class="bg-gradient-to-br from-indigo-100 via-purple-50 to-white min-h-screen flex items-center justify-center px-4 py-6">
+
+  <!-- 💡 Main Container -->
+  <div class="bg-white shadow-xl rounded-xl w-full max-w-3xl p-6 space-y-6 border border-gray-200 fade-animate">
+
+    <!-- 🖼️ Banner image -->
+    <div class="w-full fade-animate fade-delay-1">
+      <img src="{{ url_for('static', filename='OIP.jpg') }}"
+           alt="Banner"
+           class="rounded-md mx-auto shadow-sm w-full max-h-32 object-cover object-center border" />
+    </div>
+
+    <!-- 🔰 App Title -->
+    <div class="text-center space-y-1 fade-animate fade-delay-2">
+      <h2 class="text-2xl md:text-3xl font-bold text-indigo-700">🧠 Smart AI Meeting Scheduler</h2>
+      <p class="text-sm text-gray-500">Find the best time to meet — simple, smart & AI-powered</p>
+    </div>
+
+    <!-- ▶️ Step 1: Welcome Screen -->
+    <div id="step1" class="text-center space-y-4 fade-animate fade-delay-3">
+      <p class="text-gray-700 text-sm">Click below to begin scheduling your meeting</p>
+      <button onclick="goToStep(2)" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded text-sm shadow btn-animate">Start Scheduling</button>
+    </div>
+
+    <!-- ▶️ Step 2: Choose Method -->
+    <div id="step2" class="hidden text-center space-y-4 fade-animate fade-delay-3">
+      <p class="font-medium text-gray-700 text-sm">Choose how to input your time slots:</p>
+      <div class="flex flex-col sm:flex-row justify-center gap-3 flex-wrap">
+        <button onclick="goToStep(3)" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm btn-animate">Upload Calendar</button>
+        <button onclick="goToStep(4)" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm btn-animate">Enter Manually</button>
+      </div>
+      <button onclick="goToStep(1)" class="text-xs text-indigo-600 hover:underline">← Back</button>
+    </div>
+
+    <!-- ▶️ Step 3: Upload JSON File -->
+    <form id="step3" method="POST" enctype="multipart/form-data" class="hidden space-y-4 text-sm fade-animate fade-delay-3">
+      <!-- Sender Info and Options -->
+      <div class="grid sm:grid-cols-2 gap-3">
+        <div>
+          <label class="text-gray-600">Sender / Company Name</label>
+          <input type="text" name="sender_name" class="w-full border rounded p-2" required />
+        </div>
+        <div>
+          <label class="text-gray-600">Zoom Link (optional)</label>
+          <input type="url" name="custom_link" class="w-full border rounded p-2" />
+        </div>
+      </div>
+
+      <!-- Custom Message -->
+      <div>
+        <label class="text-gray-600">Custom Message (optional)</label>
+        <textarea name="custom_message" rows="2" class="w-full border rounded p-2 text-sm"></textarea>
+      </div>
+
+      <!-- Confirmation Option -->
+      <div>
+        <label class="text-gray-600">Confirmation Preference</label>
+        <select name="confirm_choice" class="w-full border rounded p-2 text-sm">
+          <option value="ask">Ask before sending</option>
+          <option value="direct">Send directly</option>
+        </select>
+      </div>
+
+      <!-- Upload File Input -->
+      <div>
+        <label class="text-gray-600">Upload JSON File</label>
+        <input type="file" name="calendar_file" accept=".json" class="w-full border p-2 rounded text-sm" />
+      </div>
+
+      <!-- Form Buttons -->
+      <div class="flex justify-between">
+        <button type="button" onclick="goToStep(2)" class="text-xs text-indigo-600 hover:underline">← Back</button>
+        <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-1.5 rounded text-sm shadow btn-animate">Find Slot</button>
+      </div>
+    </form>
+
+    <!-- ▶️ Step 4: Enter Manually -->
+    <form id="step4" method="POST" class="hidden space-y-4 text-sm fade-animate fade-delay-3">
+      <!-- Same Fields as Step 3 -->
+      <div class="grid sm:grid-cols-2 gap-3">
+        <div>
+          <label class="text-gray-600">Sender / Company Name</label>
+          <input type="text" name="sender_name" class="w-full border rounded p-2" required />
+        </div>
+        <div>
+          <label class="text-gray-600">Zoom Link (optional)</label>
+          <input type="url" name="custom_link" class="w-full border rounded p-2" />
+        </div>
+      </div>
+
+      <!-- Message -->
+      <div>
+        <label class="text-gray-600">Custom Message (optional)</label>
+        <textarea name="custom_message" rows="2" class="w-full border rounded p-2 text-sm"></textarea>
+      </div>
+
+      <!-- Confirmation -->
+      <div>
+        <label class="text-gray-600">Confirmation Preference</label>
+        <select name="confirm_choice" class="w-full border rounded p-2 text-sm">
+          <option value="ask">Ask before sending</option>
+          <option value="direct">Send directly</option>
+        </select>
+      </div>
+
+      <!-- Slot Inputs -->
+      <div>
+        <label class="text-gray-600">Available Time Slots</label>
+        <div id="manual-slots" class="space-y-2 text-left text-sm">
+          <!-- Slots added dynamically by JS -->
+        </div>
+        <p class="text-xs text-gray-500 mt-1">Use 24-hr or AM/PM format, e.g. <code>2025-07-12 03:30 PM</code></p>
+        <button type="button" onclick="addSlot()" class="text-indigo-600 text-sm hover:underline">+ Add Slot</button>
+      </div>
+
+      <!-- Form Buttons -->
+      <div class="flex justify-between">
+        <button type="button" onclick="goToStep(2)" class="text-xs text-indigo-600 hover:underline">← Back</button>
+        <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-1.5 rounded text-sm shadow btn-animate">Find Slot</button>
+      </div>
+    </form>
+
+    <!-- ✅ Step 5: Result View -->
+    <div id="step5" class="hidden space-y-4 text-center fade-animate fade-delay-3">
+      <h2 class="text-xl font-semibold text-indigo-700 flex items-center justify-center gap-2">
+        ✅ Common Slot Found
+      </h2>
+      <div class="bg-blue-50 border border-blue-200 text-blue-800 px-4 py-3 rounded-md shadow text-sm">
+        <strong>{{ result|safe }}</strong>
+      </div>
+      <button onclick="goToStep(1)" class="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-1.5 rounded text-sm btn-animate">
+        Schedule Another
+      </button>
+    </div>
+
+  </div>
+
+  <!-- 👇 If result exists, go to Step 5 automatically -->
+  {% if result %}
+  <script>
+    window.addEventListener('DOMContentLoaded', () => goToStep(5));
+  </script>
+  {% endif %}
+</body>
+</html>

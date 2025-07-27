@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Basic page setup -->
+  <meta charset="UTF-8" />
+  <title>Confirm Meeting Slot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- Tailwind CSS CDN for styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Font (Inter) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+
+  <!-- Custom styles -->
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+
+    /* Simple fade-in animation */
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in { animation: fadeInUp 0.6s ease-out; }
+  </style>
+</head>
+
+<body class="bg-gradient-to-tr from-gray-100 via-white to-purple-50 min-h-screen flex items-center justify-center p-4">
+
+  <!-- Main container box -->
+  <div class="bg-white rounded-lg shadow-xl max-w-xl w-full p-6 space-y-6 border border-gray-200 fade-in">
+
+    <!-- ✅ Top banner image (logo or visual) -->
+    <div class="w-full fade-in">
+      <img src="{{ url_for('static', filename='OIP.jpg') }}"
+           alt="Banner"
+           class="rounded-md mx-auto shadow-sm w-full max-h-32 object-cover object-center border" />
+    </div>
+
+    <!-- Page title -->
+    <h2 class="text-2xl font-bold text-indigo-700 text-center fade-in">Confirm Meeting Slot</h2>
+
+    <!-- Meeting details section -->
+    <div class="text-sm text-gray-700 space-y-2 fade-in">
+      <p><strong>📅 Date:</strong> {{ meeting_date }}</p>
+      <p>
+        <strong>🕒 Time:</strong> 
+        {{ ist_start }} – {{ ist_end }} IST 
+        ({{ utc_start }} – {{ utc_end }} UTC)
+      </p>
+      <p class="text-xs text-gray-500">For Indian participants: IST | For others: UTC</p>
+
+      <!-- Show meeting link if available -->
+      {% if custom_link %}
+        <p><strong>🔗 Meeting Link:</strong> 
+          <a href="{{ custom_link }}" class="text-blue-600 hover:underline">{{ custom_link }}</a>
+        </p>
+      {% endif %}
+
+      <!-- Show custom message if provided -->
+      {% if custom_message %}
+        <p><strong>📧 Custom Message Preview:</strong></p>
+        <div class="border border-gray-300 p-3 bg-gray-50 rounded mt-1 text-gray-800 text-sm overflow-auto max-h-64">
+          <pre class="whitespace-pre-wrap">{{ custom_message }}</pre>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Form to confirm and send invitations -->
+    <form method="POST" action="/" class="fade-in">
+
+      <!-- Hidden inputs to pass form data -->
+      <input type="hidden" name="sender_name" value="{{ sender_name }}">
+      <input type="hidden" name="custom_link" value="{{ custom_link }}">
+      <input type="hidden" name="custom_message" value="{{ custom_message }}">
+      <input type="hidden" name="confirm_choice" value="confirmed">
+      <input type="hidden" name="slot_start" value="{{ slot['start'] }}">
+      <input type="hidden" name="slot_end" value="{{ slot['end'] }}">
+
+      <!-- Loop to add each participant’s data -->
+      {% for agent in agents %}
+        <input type="hidden" name="manual_emails[]" value="{{ agent.email }}">
+        <input type="hidden" name="start_times[]" value="{{ agent.slots[0]['start'].strftime('%Y-%m-%d %H:%M') }}">
+        <input type="hidden" name="end_times[]" value="{{ agent.slots[0]['end'].strftime('%Y-%m-%d %H:%M') }}">
+        <input type="hidden" name="timezones[]" value="{{ agent.timezone }}">
+      {% endfor %}
+
+      <!-- Buttons to confirm or cancel -->
+      <div class="flex justify-center gap-4 pt-4">
+        <!-- Confirm and submit the form -->
+        <button type="submit" class="bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700 text-sm shadow transition duration-300 transform hover:scale-105">
+          ✅ Confirm & Send Invites
+        </button>
+
+        <!-- Cancel and go back to homepage -->
+        <a href="/" class="bg-gray-200 text-gray-800 px-5 py-2 rounded hover:bg-gray-300 text-sm shadow transition duration-300 transform hover:scale-105">
+          ❌ Cancel
+        </a>
+      </div>
+    </form>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,12 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:ics.py - http://git.io/lLljaA
+BEGIN:VEVENT
+DESCRIPTION:Zoom Meeting Link: https://us05web.zoom.us/j/89103869370?pwd=ctZSiRyDMBtzHRnGQZbIWRb5TC7MWA.1\n    \nPlease join the meeting on time from any device.
+DTEND:20250630T053000Z
+LOCATION:https://us05web.zoom.us/j/89103869370?pwd=ctZSiRyDMBtzHRnGQZbIWRb5TC7MWA.1
+DTSTART:20250630T050000Z
+SUMMARY:🤖 Smart AI Meeting
+UID:10ef4c96-0ef0-4bdf-b57f-99e89e89d8dd
+END:VEVENT
+END:VCALENDAR

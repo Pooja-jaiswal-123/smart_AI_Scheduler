@@ -1,0 +1,17 @@
+{
+  "user1": {
+     "name": "pooja",
+    "email": "pooja.jaiswal.ac16@gmail.com",
+    "timezone": "Asia/Kolkata",
+    "slots": [
+      { "start": "2025-06-30 10:00", "end": "2025-06-30 11:00" }
+    ]
+  },
+  "user2": {
+     "name": "Kriti",
+    "email": "kritisen576@gmail.com",
+    "timezone": "Asia/Kolkata",
+    "slots": [
+      { "start": "2025-06-30 10:30", "end": "2025-06-30 11:30" }
+    ]
+  }}

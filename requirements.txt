@@ -1,0 +1,24 @@
+# ✅ Core Flask Web Framework
+Flask
+
+# ⏰ Timezone and Date Parsing
+pytz
+python-dateutil
+
+# 🌐 API Requests & OAuth
+requests
+google-api-python-client
+google-auth
+google-auth-oauthlib
+
+# 🔐 For loading environment variables from .env file
+python-dotenv
+
+# 🤖 Google Generative AI (Gemini) SDK
+google-generativeai
+
+# 📅 Calendar Invite Generation (.ics files)
+ics
+
+# (Optional) If using OpenAI GPT too (not needed for Gemini-only project)
+# openai
