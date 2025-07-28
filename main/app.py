@@ -9,6 +9,8 @@ import os
 from calendar_invite import generate_ics
 from zoom_meeting import create_zoom_meeting
 from ai_utils import generate_ai_message, generate_reschedule_message, rank_slots_with_gpt
+from send_email import send_email
+
 
 app = Flask(
     __name__,
